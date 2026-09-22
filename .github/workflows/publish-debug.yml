@@ -1,0 +1,43 @@
+name: Publish Debug APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag
+        required: true
+        default: v0.1-debug
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '9.4.1'
+          cache-provider: basic
+      - name: Build debug APK
+        env:
+          SKIP_SIGNING: true
+        run: |
+          gradle wrapper
+          ./gradlew assembleDebug --stacktrace
+          cp app/build/outputs/apk/debug/app-debug.apk YishaiCallRecorder-debug.apk
+      - name: Publish public prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release delete "$TAG" --cleanup-tag --yes || true
+          gh release create "$TAG" YishaiCallRecorder-debug.apk \
+            --title "Yishai Call Recorder debug build" \
+            --notes "CI-built debug APK for Pixel 9 Pro testing. Requires Shizuku setup; device behavior remains unverified." \
+            --prerelease
