@@ -48,8 +48,8 @@ class AppPreferences(context: Context) {
         const val RECORD_THIRD_PARTY_CALLS = false
 
         const val POST_RECORDING_FILE_ACTIONS_NOTIFICATION_ENABLED = false
-        const val AUTO_RECORD_INCOMING = false
-        const val AUTO_RECORD_OUTGOING = false
+        const val AUTO_RECORD_INCOMING = true
+        const val AUTO_RECORD_OUTGOING = true
         const val KEEP_SCREEN_ON_DURING_CALLS = false
 
         
@@ -69,12 +69,12 @@ class AppPreferences(context: Context) {
         
         // --- Audio/Scrcpy Quality ---
         val AUDIO_SOURCE = ScrcpyAudioSource.VOICE_CALL.cliKey
-        val AUDIO_CODEC = ScrcpyAudioCodec.OPUS.cliKey
+        val AUDIO_CODEC = ScrcpyAudioCodec.AAC.cliKey
 
-        val AUDIO_BITRATE = ScrcpyAudioCodec.OPUS.defaultBitRate
+        val AUDIO_BITRATE = ScrcpyAudioCodec.AAC.defaultBitRate
 
         // --- File Naming & Management ---
-        const val FILE_NAME_TEMPLATE = "{date}_{direction}_{phone_number}"
+        const val FILE_NAME_TEMPLATE = "{date}_{time}_{direction}_{phone_number}"
         const val AUTO_DELETE_DAYS = 0 // 0 means Never
 
         // --- UI & Appearance ---
